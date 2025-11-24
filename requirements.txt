@@ -18,6 +18,9 @@ jupyter>=1.0.0
 
 # Utilities
 requests>=2.28.0
+
+# Testing (for development)
+pytest>=7.0.0
 python-dotenv>=0.21.0
 
 # Development

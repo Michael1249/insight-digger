@@ -1,16 +1,22 @@
 #!/bin/bash
 
-# Enable Jupyter widgets
+# Binder post-build script for Insight Digger
+# Configures Jupyter environment for soc_opros survey analysis
+
+# Enable Jupyter widgets for interactive components  
 jupyter nbextension enable --py --sys-prefix widgetsnbextension
 
-# Enable JupyterLab extensions if available
+# Install JupyterLab extensions for enhanced data visualization
 if command -v jupyter-labextension >/dev/null 2>&1; then
     jupyter labextension install @jupyter-widgets/jupyterlab-manager --no-build
     jupyter labextension install plotlywidget --no-build
-    jupyter lab build
+    jupyter lab build --minimize=False
 fi
 
 # Create data directories if they don't exist
 mkdir -p data/raw data/processed data/exports
 
-echo "Binder environment setup complete!"
+# Ensure proper permissions
+chmod -R 755 notebooks/
+
+echo "✅ Binder environment configured for soc_opros survey analysis"

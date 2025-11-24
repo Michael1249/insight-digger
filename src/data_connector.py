@@ -134,7 +134,51 @@ class DataConnector:
             print(f"❌ Error loading CSV file: {e}")
             return None
     
-    def load_csv_url(self, url: str) -> Optional[pd.DataFrame]:
+    def load_google_sheet_csv(self, sheet_id: str, gid: Optional[str] = None) -> Optional[pd.DataFrame]:
+        """
+        Load Google Sheet data via CSV export (works with public sheets without authentication).
+        
+        Args:
+            sheet_id: Google Sheet ID (from URL)
+            gid: Worksheet GID (from URL, optional for first sheet)
+            
+        Returns:
+            pandas.DataFrame or None if loading fails
+        """
+        try:
+            # Construct CSV export URL
+            if gid:
+                csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid={gid}"
+            else:
+                csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
+            
+            print(f"📥 Loading via CSV export: {csv_url}")
+            
+            # Download CSV data
+            response = requests.get(csv_url, timeout=30)
+            response.raise_for_status()
+            
+            # Read CSV from response
+            csv_data = StringIO(response.text)
+            df = pd.read_csv(csv_data)
+            
+            # Store source info
+            self.source_info[sheet_id] = {
+                'type': 'google_sheets_csv',
+                'sheet_id': sheet_id,
+                'gid': gid,
+                'csv_url': csv_url,
+                'last_updated': pd.Timestamp.now(),
+                'rows': len(df),
+                'columns': len(df.columns)
+            }
+            
+            print(f"✅ Loaded {len(df)} rows via CSV export")
+            return df
+            
+        except Exception as e:
+            print(f"❌ CSV export failed: {e}")
+            return None
         """
         Load data from CSV URL.
         

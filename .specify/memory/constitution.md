@@ -1,50 +1,36 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# Insight Digger Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Requirements-First Development
+Every notebook MUST start with documented data requirements and analysis objectives before any code is written. This includes expected data schema, source requirements, and clear success criteria. Notebooks that fail to document requirements upfront cannot be merged to main branch.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Structure Preservation (NON-NEGOTIABLE)
+The project structure (`/notebooks`, `/src`, `/data`, `/config`) MUST be preserved across all development. No reorganization or consolidation of core directories. Shared utilities belong in `/src`, data connectors in `/config`, raw/processed data separation maintained.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Binder-First Compatibility
+ALL notebooks MUST work in Binder cloud environment without local dependencies. This means no local file assumptions, proper error handling for missing credentials, and graceful degradation when external services are unavailable.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Data Source Resilience
+Notebooks MUST include data validation and schema checking before processing. When primary data sources fail, notebooks MUST clearly indicate the failure and provide actionable error messages. Demo data fallbacks encouraged but not required.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Iterative Development & Error Transparency
+Code MUST fail fast and provide clear error messages to enable quick debugging. When data schema changes are detected (new columns, missing fields), notebooks MUST stop execution with specific information about what changed, allowing rapid iteration.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Development Standards
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+All notebooks are independent but should leverage shared utilities from `/src` when appropriate. Self-contained approach preferred unless clear reusability benefits exist. Error handling and validation required in all data processing steps.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Collaboration Guidelines
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+Project supports multiple contributors but assumes single primary maintainer. Contributors can experiment freely but finished work should create duplicates rather than modify existing stable notebooks. No formal review process required for experimentation, but production notebooks benefit from peer validation.
+
+## Quality Assurance
+
+Notebook templates encouraged but not mandated - flexibility preserved for independent analysis needs. Automated testing implemented for shared utilities in `/src`. Deployment pipeline includes basic smoke tests to verify notebooks can execute in Binder environment without critical failures.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+Constitution preserves project flexibility while ensuring reliability for public sharing via Binder. Structure decisions favor maintainability and ease of debugging. When in doubt, choose the option that makes iteration faster and errors more transparent.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2025-11-24 | **Last Amended**: 2025-11-24

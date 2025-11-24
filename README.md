@@ -7,7 +7,7 @@ A spec-driven Jupyter notebook project for analyzing survey data from Google She
 ## Features
 
 - 🔄 **Dynamic Data Loading**: Automatically adapts to variable number of survey statements and respondents
-- 🌐 **Cyrillic Text Support**: Proper UTF-8 encoding for Russian respondent names and content
+- 🌐 **Cyrillic Text Support**: Proper UTF-8 encoding for Cyrillic respondent names
 - 📊 **Clean Data Interface**: Structured responses matrix ready for statistical analysis
 - 🔗 **Google Sheets Integration**: Direct CSV export connection without authentication
 - ⚡ **Binder Ready**: Run online instantly with pre-configured environment
@@ -52,7 +52,7 @@ summary = loader.get_response_summary()
 
 The project analyzes the 'soc opros' survey containing:
 - **265 philosophical/psychological statements** (variable content)
-- **15 Russian respondents** with Cyrillic names (Амелия, Итанио, Отец, etc.)
+- **15 respondents** with Cyrillic names (Амелия, Итанио, Отец, etc.)
 - **5-point Likert scale** responses (strongly disagree → strongly agree)
 - **68.2% completion rate** with 2,723 valid responses
 
@@ -77,7 +77,7 @@ insight-digger/
 
 ### Encoding Handling
 - Automatic UTF-8 encoding for Google Sheets CSV export
-- Proper Cyrillic text decoding for Russian content
+- Proper Cyrillic text decoding for respondent names
 - Column name extraction from first data row
 
 ### Dynamic Structure
@@ -134,4 +134,4 @@ MIT License - See LICENSE file for details.
 
 ---
 
-**Ready for Analysis**: Load 265 survey statements from 15 Russian respondents with proper Cyrillic encoding in just one line of code.
+**Ready for Analysis**: Load 265 survey statements from 15 respondents with proper Cyrillic encoding in just one line of code.

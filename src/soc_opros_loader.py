@@ -186,7 +186,7 @@ class SocOprosLoader:
         Extract the responses matrix (statements × respondents).
         
         Returns:
-            pd.DataFrame: Clean responses matrix with proper indexing
+            pd.DataFrame: Clean responses matrix with proper indexing and numeric conversion
         """
         if self.data is None:
             raise ValueError("Data must be loaded first using load_data()")
@@ -212,8 +212,72 @@ class SocOprosLoader:
                 columns=[f"Respondent_{i+1}" for i in range(response_data.shape[1])]
             )
         
+        # Convert text responses to numeric values
+        self.responses = self._convert_to_numeric(self.responses)
+        
         logger.info(f"Responses matrix created - Shape: {self.responses.shape}")
         return self.responses
+    
+    def _convert_to_numeric(self, responses: pd.DataFrame) -> pd.DataFrame:
+        """
+        Convert text-based Likert scale responses to numeric values.
+        
+        Args:
+            responses: DataFrame with text responses
+            
+        Returns:
+            DataFrame with numeric responses
+        """
+        # Define the mapping from text to numeric values
+        likert_mapping = {
+            'strongly disagree': 1,
+            'disagree': 2,
+            'indifferent': 3,
+            'neutral': 3,  # Alternative neutral response
+            'agree': 4,
+            'strongly agree': 5
+        }
+        
+        # Create a copy to avoid modifying original
+        numeric_responses = responses.copy()
+        
+        # Convert each cell
+        for col in numeric_responses.columns:
+            for idx in numeric_responses.index:
+                value = numeric_responses.loc[idx, col]
+                if pd.isna(value):
+                    continue
+                    
+                # Convert to string and normalize
+                value_str = str(value).lower().strip()
+                
+                # Map to numeric value
+                if value_str in likert_mapping:
+                    numeric_responses.loc[idx, col] = likert_mapping[value_str]
+                else:
+                    # Try to convert directly to numeric if possible
+                    try:
+                        numeric_val = float(value_str)
+                        if 1 <= numeric_val <= 5:
+                            numeric_responses.loc[idx, col] = numeric_val
+                        else:
+                            # Out of range, set to neutral
+                            numeric_responses.loc[idx, col] = 3
+                    except ValueError:
+                        # Unknown text response, set to neutral
+                        logger.warning(f"Unknown response '{value}' converted to neutral (3)")
+                        numeric_responses.loc[idx, col] = 3
+        
+        # Convert to numeric dtype
+        numeric_responses = numeric_responses.astype(float)
+        
+        # Fill any remaining NaN values with 3.0 (indifferent/neutral)
+        nan_count = numeric_responses.isnull().sum().sum()
+        if nan_count > 0:
+            logger.info(f"Filling {nan_count} missing values with neutral response (3.0)")
+            numeric_responses = numeric_responses.fillna(3.0)
+        
+        return numeric_responses
     
     def get_statements(self) -> List[str]:
         """

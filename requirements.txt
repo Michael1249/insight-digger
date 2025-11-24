@@ -12,6 +12,10 @@ plotly>=5.13.0
 matplotlib>=3.6.0
 seaborn>=0.12.0
 
+# EFA and Statistical Analysis
+factor-analyzer>=0.4.1
+scipy>=1.10.0
+
 # Jupyter enhancements
 ipywidgets>=8.0.0
 jupyter>=1.0.0

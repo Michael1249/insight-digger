@@ -11,6 +11,7 @@ dependencies:
   - matplotlib>=3.6.0
   - seaborn>=0.12.0
   - plotly>=5.13.0
+  - scipy>=1.10.0
   - ipywidgets>=8.0.0
   - pip:
     - gspread>=5.7.0
@@ -19,3 +20,4 @@ dependencies:
     - python-dotenv>=0.21.0
     - pytest>=7.0.0
     - nbval>=0.9.6
+    - factor-analyzer>=0.4.1

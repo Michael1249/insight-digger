@@ -1,0 +1,21 @@
+name: insight-digger
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - jupyter
+  - pandas>=1.5.0
+  - numpy>=1.24.0
+  - matplotlib>=3.6.0
+  - seaborn>=0.12.0
+  - plotly>=5.13.0
+  - ipywidgets>=8.0.0
+  - pip:
+    - gspread>=5.7.0
+    - google-auth>=2.16.0
+    - google-auth-oauthlib>=1.0.0
+    - python-dotenv>=0.21.0
+    - pytest>=7.0.0
+    - nbval>=0.9.6

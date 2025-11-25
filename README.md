@@ -1,7 +1,6 @@
-# Insight Digger - EFA Toolkit
+# Insight Digger
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://python.org)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Michael1249/insight-digger/HEAD)
 
 Exploratory Factor Analysis toolkit for discovering hidden dimensions in survey data.

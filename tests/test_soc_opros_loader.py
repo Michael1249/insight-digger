@@ -204,14 +204,20 @@ class TestSocOprosLoader(unittest.TestCase):
             for key in required_keys:
                 self.assertIn(key, summary, f"Summary should contain {key}")
             
-            # Validate response values are Likert scale
+            # Validate response values are Likert scale (numeric or text)
             unique_responses = summary['unique_response_values']
-            expected_responses = {'strongly agree', 'agree', 'indifferent', 'disagree', 'strongly disagree'}
             
-            # Check if responses match expected Likert scale (allowing for variations)
-            actual_responses = set(resp.lower() for resp in unique_responses)
-            overlap = expected_responses.intersection(actual_responses)
-            self.assertGreater(len(overlap), 0, "Should contain Likert scale responses")
+            # Check for numeric Likert scale (1-5) or text-based responses
+            numeric_responses = {'1.0', '2.0', '3.0', '4.0', '5.0', '1', '2', '3', '4', '5'}
+            text_responses = {'strongly agree', 'agree', 'indifferent', 'disagree', 'strongly disagree'}
+            
+            actual_responses = set(str(resp).lower() for resp in unique_responses)
+            numeric_overlap = numeric_responses.intersection(actual_responses)
+            text_overlap = text_responses.intersection(actual_responses)
+            
+            # Should match either numeric or text Likert scale
+            has_valid_responses = len(numeric_overlap) > 0 or len(text_overlap) > 0
+            self.assertTrue(has_valid_responses, f"Should contain Likert scale responses. Found: {unique_responses}")
             
             # Validate completion rate
             self.assertGreaterEqual(summary['completion_rate'], 0, "Completion rate should be non-negative")

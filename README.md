@@ -3,7 +3,7 @@
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://python.org)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Michael1249/insight-digger/HEAD)
 
-Exploratory Factor Analysis toolkit for discovering hidden dimensions in survey data.
+Curiosity project to explore different data analysis techniques.
 
 > **🚀 Quick Start**: Click the Binder badge above to run notebooks instantly online!
 

@@ -9,8 +9,8 @@ import requests
 from typing import Optional, Dict, List, Tuple
 import logging
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
+# Configure logging for warnings and errors only
+logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 class SocOprosLoader:
@@ -41,7 +41,6 @@ class SocOprosLoader:
         """
         try:
             url = self.base_url.format(sheet_id=self.sheet_id, gid=self.worksheet_gid)
-            logger.info(f"Loading data from: {url}")
             
             response = requests.get(url, timeout=30)
             response.raise_for_status()
@@ -67,8 +66,6 @@ class SocOprosLoader:
                 # Remove the first row since it's now used as column names
                 self.data = self.data.iloc[1:].reset_index(drop=True)
             
-            logger.info(f"Data loaded successfully with encoding: {response.encoding} - Shape: {self.data.shape}")
-            logger.info(f"Column names: {list(self.data.columns)}")
             return self.data
             
         except Exception as e:
@@ -176,9 +173,6 @@ class SocOprosLoader:
             'respondents_preview': self.respondents[:3] if self.respondents else []
         }
         
-        logger.info(f"Structure parsed - {structure_info['total_statements']} statements, "
-                   f"{structure_info['total_respondents']} respondents")
-        
         return structure_info
     
     def get_responses_matrix(self) -> pd.DataFrame:
@@ -215,7 +209,6 @@ class SocOprosLoader:
         # Convert text responses to numeric values
         self.responses = self._convert_to_numeric(self.responses)
         
-        logger.info(f"Responses matrix created - Shape: {self.responses.shape}")
         return self.responses
     
     def _convert_to_numeric(self, responses: pd.DataFrame) -> pd.DataFrame:
@@ -233,7 +226,6 @@ class SocOprosLoader:
             'strongly disagree': 1,
             'disagree': 2,
             'indifferent': 3,
-            'neutral': 3,  # Alternative neutral response
             'agree': 4,
             'strongly agree': 5
         }
@@ -274,7 +266,6 @@ class SocOprosLoader:
         # Fill any remaining NaN values with 3.0 (indifferent/neutral)
         nan_count = numeric_responses.isnull().sum().sum()
         if nan_count > 0:
-            logger.info(f"Filling {nan_count} missing values with neutral response (3.0)")
             numeric_responses = numeric_responses.fillna(3.0)
         
         return numeric_responses
